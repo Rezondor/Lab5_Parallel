@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lab5.Models
 {
-    internal class Worker
+    internal class Worker: Object
     {
         public int Id { get; set; }
         public string FirstName { get; set; }

@@ -22,9 +22,10 @@ foreach (var item in a)
                             (u, l) => new {Worker = u, Orders = l })
                           .Where(u => u.Orders.DateTime >new DateTime(2015,10,1))
                           .Select(u => u.Orders).OrderBy(u => u.DateTime);*/
-/*var selectedWorkers = a.Select(u => new { Worker = u, AVG = u.Orders.Average(p => p.Price) }).OrderByDescending(u=>u.AVG);*/
+var selectedWorkers = RequestHelper.GetWorkersSortedByAVGOrderPrice(a);
 //var selectedWorkers = RequestHelper.GetOrdersWhereFullNameStartsWith(a,'a');
-var selectedWorkers= RequestHelper.GetOrdersBeforeOrAfterDate(a,RequestHelper.BeforeOrAfter.After,new DateTime(2001,01,15));
+//var selectedWorkers= RequestHelper.GetOrdersBeforeOrAfterDate(a,RequestHelper.BeforeOrAfter.After,new DateTime(2001,01,15));
+//var selectedWorkers
 Console.WriteLine();
 foreach (var item in selectedWorkers)
 {
