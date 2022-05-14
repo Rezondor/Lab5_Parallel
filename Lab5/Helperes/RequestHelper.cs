@@ -9,7 +9,7 @@ using Lab5.Models;
 
 namespace Lab5.Helperes
 {
-    internal class RequestHelper
+    public class RequestHelper
     {
         public enum BeforeOrAfter
         {
@@ -57,6 +57,21 @@ namespace Lab5.Helperes
             return vr1;   
         }
 
-        public record class VR(Worker worker, double AVG);
-    }   
+        
+
+
+        public static List<Order> GetOrdersWhereFullNameStartsWithParallel(List<Worker> workers, char mark, int numberThreads)
+        {
+            var orders = workers.AsParallel()
+                .WithDegreeOfParallelism(numberThreads)
+                .SelectMany(u => u.Orders, (u, l) => new { Worker = u, Orders = l })
+                .Where(u => u.Worker.LastName.ToLower().Contains(mark) ||
+                u.Worker.FirstName.ToLower().Contains(mark) ||
+                u.Worker.Patronymic.ToLower().Contains(mark))
+                .Select(u => u.Orders).OrderBy(u => u.DateTime).ToList();
+            return orders;
+
+        }
+        /*.AsParallel().WithDegreeOfParallelism(2)*/
+    }
 }

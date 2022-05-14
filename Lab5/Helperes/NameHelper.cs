@@ -1,6 +1,6 @@
 ﻿namespace Lab5.Helperes
 {
-    internal class NameHelper
+    public class NameHelper
     {
         public static string GenerateName(int len)
         {

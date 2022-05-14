@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Lab5.Helperes
 {
-    internal class WorkerHelper
+    public class WorkerHelper
     {
         public static List<Worker> GenerateWorkersList(int count)
         {
@@ -18,22 +18,20 @@ namespace Lab5.Helperes
             for (int i = 0; i < count; i += 2)
             {
                 int countOrdersFirsrt = random.Next(1, 181);
-                workers.Add(GenerateWorker(i, countOrdersFirsrt, random));
-                workers.Add(GenerateWorker(i + 1, 200 - countOrdersFirsrt, random));
+                workers.Add(GenerateWorker(countOrdersFirsrt, random));
+                workers.Add(GenerateWorker(200 - countOrdersFirsrt, random));
             }
             return workers;
         }
-        public static Worker GenerateWorker(int id, int countOrders, Random random)
-        {var temp = new Worker
+        public static Worker GenerateWorker(int countOrders, Random random)
+        {
+            return new Worker
             {
-                Id = id,
                 FirstName = NameHelper.GenerateName(random.Next(3, 10)),
                 LastName = NameHelper.GenerateName(random.Next(3, 10)),
                 Patronymic = NameHelper.GenerateName(random.Next(3, 10)),
-                
-        };
-            temp.Orders = OrderHelper.GenerateOrdersList(countOrders, temp.FullName);
-            return temp;
+                Orders = OrderHelper.GenerateOrdersList(countOrders)
+            };
         }
     }
 }
