@@ -11,7 +11,7 @@ namespace Lab5.Models
         public int Id { get; set; }
         public string Title { get; set; }
         public DateTime DateTime { get; set; }
-
-        public override string ToString() => $"{Id,-5} | {Title,-20} | {DateTime.ToShortDateString(),-1}";
+        public int Price { get; set; }
+        public override string ToString() => $"{Id,-5} | {Title,-25}| {Price,-7s} | {DateTime.ToShortDateString(),-1}";
     }
 }
