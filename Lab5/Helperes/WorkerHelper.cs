@@ -24,15 +24,17 @@ namespace Lab5.Helperes
             return workers;
         }
         public static Worker GenerateWorker(int id, int countOrders, Random random)
-        {
-            return new Worker
+        {var temp = new Worker
             {
                 Id = id,
-                FirastName = NameHelper.GenerateName(random.Next(3, 10)),
+                FirstName = NameHelper.GenerateName(random.Next(3, 10)),
                 LastName = NameHelper.GenerateName(random.Next(3, 10)),
                 Patronymic = NameHelper.GenerateName(random.Next(3, 10)),
-                Orders = OrderHelper.GenerateOrdersList(countOrders)
             };
+            string FullName= $"{temp.FirstName} {temp.LastName} {temp.Patronymic}";
+            temp.Orders = OrderHelper.GenerateOrdersList(countOrders, FullName);
+
+            return temp;
         }
     }
 }
