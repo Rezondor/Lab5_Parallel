@@ -30,10 +30,9 @@ namespace Lab5.Helperes
                 FirstName = NameHelper.GenerateName(random.Next(3, 10)),
                 LastName = NameHelper.GenerateName(random.Next(3, 10)),
                 Patronymic = NameHelper.GenerateName(random.Next(3, 10)),
-            };
-            string FullName= $"{temp.FirstName} {temp.LastName} {temp.Patronymic}";
-            temp.Orders = OrderHelper.GenerateOrdersList(countOrders, FullName);
-
+                
+        };
+            temp.Orders = OrderHelper.GenerateOrdersList(countOrders, temp.FullName);
             return temp;
         }
     }

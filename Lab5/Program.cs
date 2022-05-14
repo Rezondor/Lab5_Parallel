@@ -23,7 +23,8 @@ foreach (var item in a)
                           .Where(u => u.Orders.DateTime >new DateTime(2015,10,1))
                           .Select(u => u.Orders).OrderBy(u => u.DateTime);*/
 /*var selectedWorkers = a.Select(u => new { Worker = u, AVG = u.Orders.Average(p => p.Price) }).OrderByDescending(u=>u.AVG);*/
-var selectedWorkers = RequestHelper.GetOrdersWhereFullNameStartsWith(a,'a');
+//var selectedWorkers = RequestHelper.GetOrdersWhereFullNameStartsWith(a,'a');
+var selectedWorkers= RequestHelper.GetOrdersBeforeOrAfterDate(a,RequestHelper.BeforeOrAfter.After,new DateTime(2001,01,15));
 Console.WriteLine();
 foreach (var item in selectedWorkers)
 {
