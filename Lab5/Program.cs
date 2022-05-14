@@ -10,6 +10,7 @@ List<int> CountWorkers = new List<int>()
     10000,
     100000,
 };
+List<int> CountThreads = new List<int>() { 2,4,8,16};
 Console.WriteLine(0);
 List<List<Worker>> WorkersList = new List<List<Worker>>();
 for (int i = 0; i < CountWorkers.Count; i++)
@@ -19,14 +20,17 @@ for (int i = 0; i < CountWorkers.Count; i++)
 }
 Console.WriteLine(5);
 Stopwatch sch = new Stopwatch();
-sch.Start();
-var a = RequestHelper.GetOrdersWhereFullNameStartsWith(WorkersList[3],'a');
-sch.Stop();
-Console.WriteLine("Последовательный - "+sch.ElapsedMilliseconds/1000.0);
-sch.Start();
-var b = RequestHelper.GetOrdersWhereFullNameStartsWithParallel(WorkersList[3],'a',16);
-sch.Stop();
-Console.WriteLine("Параллельный - "+sch.ElapsedMilliseconds/1000.0);
+for (int i = 0; i < CountThreads.Count; i++)
+{
+    int countThread = CountThreads[i];
+
+   /* for (int i = 0; i < length; i++)
+    {
+
+    }*/
+
+}
+
 //var selectedWorkers = RequestHelper.GetWorkersSortedByAVGOrderPrice();
 //var selectedWorkers = RequestHelper.GetOrdersWhereFullNameStartsWith(a,'a');
 //var selectedWorkers= RequestHelper.GetOrdersBeforeOrAfterDate(a,RequestHelper.BeforeOrAfter.After,new DateTime(2001,01,15));
