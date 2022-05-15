@@ -16,30 +16,42 @@ namespace Lab5.Helperes
                 .Where(u => u.Worker.LastName.ToLower().Contains(mark) ||
                 u.Worker.FirstName.ToLower().Contains(mark) ||
                 u.Worker.Patronymic.ToLower().Contains(mark))
-                .Select(u => u.Orders).OrderBy(u => u.DateTime).ToList();
-            return orders;
+                .Select(u => u.Orders).OrderBy(u => u.DateTime).AsEnumerable();
+            List<Order> ret = new();
+            foreach (var o in orders)
+                ret.Add(o);
+            return ret;
 
         }
         public List<Order> GetOrdersBeforeOrAfterDate(List<Worker> workers, BeforeOrAfter beforeOrAfter, DateTime dt)
         {
-            List<Order> orders = new List<Order>();
+            IEnumerable<Order> orders ;
             switch (beforeOrAfter)
             {
                 case BeforeOrAfter.Before:
-                    return orders = workers.AsParallel()
+                    orders = workers.AsParallel()
                                     .WithDegreeOfParallelism(NumberThreads)
                                     .SelectMany(u => u.Orders, (u, l) => new { Orders = l })
                                     .Where(u => u.Orders.DateTime < dt)
-                                    .Select(u => u.Orders).OrderBy(u => u.DateTime).ToList();
+                                    .Select(u => u.Orders).OrderBy(u => u.DateTime).AsEnumerable();
+                    break;
 
                 case BeforeOrAfter.After:
-                    return orders = workers.AsParallel()
+                    orders = workers.AsParallel()
                                     .WithDegreeOfParallelism(NumberThreads)
                                     .SelectMany(u => u.Orders, (u, l) => new { Orders = l })
                                     .Where(u => u.Orders.DateTime > dt)
-                                    .Select(u => u.Orders).OrderBy(u => u.DateTime).ToList();
+                                    .Select(u => u.Orders).OrderBy(u => u.DateTime).AsEnumerable();
+                    break;
+                default:
+                    orders = new List<Order>();
+                    break;
             }
-            return orders;
+            List<Order> ret = new();
+            
+            foreach (var o in orders)
+                ret.Add(o);
+            return ret;
 
         }
 
@@ -48,7 +60,7 @@ namespace Lab5.Helperes
             var vr = workers.AsParallel()
                     .WithDegreeOfParallelism(NumberThreads)
                     .Select(u => new { Worker = u, AVG = u.Orders.Average(p => p.Price) })
-                    .OrderByDescending(u => u.AVG).ToList();
+                    .OrderByDescending(u => u.AVG).AsEnumerable();
             List<VR> vr1 = new();
             foreach (var item in vr)
             {
