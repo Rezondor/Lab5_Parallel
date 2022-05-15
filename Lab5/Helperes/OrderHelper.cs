@@ -12,17 +12,19 @@ namespace Lab5.Helperes
     {
         public static List<Order> GenerateOrdersList(int count)
         {
-            Random random = new Random();
-            List<Order> orders = new List<Order>();
-            for (int i = 0; i < count; i++)
+            
+            List<Order> orders = new List<Order>(count);
+            /*for(int i = 0; i < count; i++)
             {
-                orders.Add(GenerateOrder(random));
-            }
+                orders.Add(GenerateOrder());
+            }*/
+            Parallel.For(0, count, i => orders.Add(GenerateOrder()));
 
             return orders;
         }
-        public static Order GenerateOrder(Random random)
+        public static Order GenerateOrder()
         {
+            Random random = new Random();
             return new Order
             {
                 Title = NameHelper.GenerateName(random.Next(3, 10)) + " - Order",

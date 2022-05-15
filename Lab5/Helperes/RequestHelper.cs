@@ -5,18 +5,19 @@ using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
 using Lab5.Helperes;
+using Lab5.Interfaces;
 using Lab5.Models;
 
 namespace Lab5.Helperes
 {
-    public class RequestHelper
+    public class RequestHelper: IRequests
     {
         public enum BeforeOrAfter
         {
             Before,
             After
         }
-        public static List<Order> GetOrdersWhereFullNameStartsWith(List<Worker> workers, char mark)
+        public List<Order> GetOrdersWhereFullNameStartsWith(List<Worker> workers, char mark)
         {
             var orders = workers.SelectMany(u => u.Orders,
                                         (u, l) => new { Worker = u, Orders = l })
@@ -27,7 +28,7 @@ namespace Lab5.Helperes
             return orders;
 
         }
-        public static List<Order> GetOrdersBeforeOrAfterDate(List<Worker> workers, BeforeOrAfter beforeOrAfter, DateTime dt)
+        public List<Order> GetOrdersBeforeOrAfterDate(List<Worker> workers, BeforeOrAfter beforeOrAfter, DateTime dt)
         {
             List<Order> orders = new List<Order>();
             switch (beforeOrAfter)
@@ -46,7 +47,7 @@ namespace Lab5.Helperes
             return orders;
         }
 
-        public static List<VR> GetWorkersSortedByAVGOrderPrice(List<Worker> workers)
+        public List<VR> GetWorkersSortedByAVGOrderPrice(List<Worker> workers)
         {
             var vr = workers.Select(u => new { Worker = u, AVG = u.Orders.Average(p => p.Price) }).OrderByDescending(u => u.AVG).ToList();
             List<VR> vr1 = new List<VR>();
@@ -56,22 +57,5 @@ namespace Lab5.Helperes
             }
             return vr1;   
         }
-
-        
-
-
-        public static List<Order> GetOrdersWhereFullNameStartsWithParallel(List<Worker> workers, char mark, int numberThreads)
-        {
-            var orders = workers.AsParallel()
-                .WithDegreeOfParallelism(numberThreads)
-                .SelectMany(u => u.Orders, (u, l) => new { Worker = u, Orders = l })
-                .Where(u => u.Worker.LastName.ToLower().Contains(mark) ||
-                u.Worker.FirstName.ToLower().Contains(mark) ||
-                u.Worker.Patronymic.ToLower().Contains(mark))
-                .Select(u => u.Orders).OrderBy(u => u.DateTime).ToList();
-            return orders;
-
-        }
-        /*.AsParallel().WithDegreeOfParallelism(2)*/
     }
 }

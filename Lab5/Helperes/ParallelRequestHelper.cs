@@ -1,4 +1,5 @@
-﻿using Lab5.Models;
+﻿using Lab5.Interfaces;
+using Lab5.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +9,14 @@ using static Lab5.Helperes.RequestHelper;
 
 namespace Lab5.Helperes
 {
-    public class ParallelRequestHelper
+    public class ParallelRequestHelper: IRequests
     {
-        public static List<Order> GetOrdersWhereFullNameStartsWithParallel(List<Worker> workers, char mark, int numberThreads)
+        public int NumberThreads { get; set; }
+        public ParallelRequestHelper(int numberThreads)=>NumberThreads = numberThreads;
+        public List<Order> GetOrdersWhereFullNameStartsWith(List<Worker> workers, char mark)
         {
             var orders = workers.AsParallel()
-                .WithDegreeOfParallelism(numberThreads)
+                .WithDegreeOfParallelism(NumberThreads)
                 .SelectMany(u => u.Orders, (u, l) => new { Worker = u, Orders = l })
                 .Where(u => u.Worker.LastName.ToLower().Contains(mark) ||
                 u.Worker.FirstName.ToLower().Contains(mark) ||
@@ -22,21 +25,21 @@ namespace Lab5.Helperes
             return orders;
 
         }
-        public static List<Order> GetOrdersBeforeOrAfterDateParallel(List<Worker> workers, BeforeOrAfter beforeOrAfter, DateTime dt, int numberThreads)
+        public List<Order> GetOrdersBeforeOrAfterDate(List<Worker> workers, BeforeOrAfter beforeOrAfter, DateTime dt)
         {
             List<Order> orders = new List<Order>();
             switch (beforeOrAfter)
             {
                 case BeforeOrAfter.Before:
                     return orders = workers.AsParallel()
-                                    .WithDegreeOfParallelism(numberThreads)
+                                    .WithDegreeOfParallelism(NumberThreads)
                                     .SelectMany(u => u.Orders, (u, l) => new { Orders = l })
                                     .Where(u => u.Orders.DateTime < dt)
                                     .Select(u => u.Orders).OrderBy(u => u.DateTime).ToList();
                    
                 case BeforeOrAfter.After:
                     return orders = workers.AsParallel()
-                                    .WithDegreeOfParallelism(numberThreads)
+                                    .WithDegreeOfParallelism(NumberThreads)
                                     .SelectMany(u => u.Orders, (u, l) => new { Orders = l })
                                     .Where(u => u.Orders.DateTime > dt)
                                     .Select(u => u.Orders).OrderBy(u => u.DateTime).ToList();
@@ -45,10 +48,10 @@ namespace Lab5.Helperes
             
         }
 
-        public static List<VR> GetWorkersSortedByAVGOrderPriceParallel(List<Worker> workers, int numberThreads)
+        public List<VR> GetWorkersSortedByAVGOrderPrice(List<Worker> workers)
         {
             var vr = workers.AsParallel()
-                    .WithDegreeOfParallelism(numberThreads)
+                    .WithDegreeOfParallelism(NumberThreads)
                     .Select(u => new { Worker = u, AVG = u.Orders.Average(p => p.Price)})
                     .OrderByDescending(u => u.AVG).ToList();
             List<VR> vr1 = new();
