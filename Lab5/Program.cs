@@ -30,12 +30,6 @@ IRequests req;
 for (int i = 0; i < CountThreads.Count; i++)
 {
     int countThread = CountThreads[i];
-    /*req = reqHelper;
-    if (countThread != 1)
-    {
-        ParallelReqHelepr.NumberThreads = countThread;
-        req = ParallelReqHelepr;
-    }*/
     ParallelReqHelepr.NumberThreads = countThread;
     req = ParallelReqHelepr;
 
