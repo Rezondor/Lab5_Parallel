@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Intrinsics.X86;
-using System.Text;
-using System.Threading.Tasks;
-using Lab5.Helperes;
-using Lab5.Interfaces;
+﻿using Lab5.Interfaces;
 using Lab5.Models;
 
 namespace Lab5.Helperes
 {
-    public class RequestHelper: IRequests
+    public class RequestHelper : IRequests
     {
         public enum BeforeOrAfter
         {
@@ -34,12 +27,12 @@ namespace Lab5.Helperes
             switch (beforeOrAfter)
             {
                 case BeforeOrAfter.Before:
-                    orders = (List<Order>)workers.SelectMany(u => u.Orders, (u, l) => new { Orders = l })
+                    orders = workers.SelectMany(u => u.Orders, (u, l) => new { Orders = l })
                           .Where(u => u.Orders.DateTime < dt)
                           .Select(u => u.Orders).OrderBy(u => u.DateTime).ToList();
                     break;
                 case BeforeOrAfter.After:
-                    orders = (List<Order>)workers.SelectMany(u => u.Orders, (u, l) => new { Orders = l })
+                    orders = workers.SelectMany(u => u.Orders, (u, l) => new { Orders = l })
                           .Where(u => u.Orders.DateTime > dt)
                           .Select(u => u.Orders).OrderBy(u => u.DateTime).ToList();
                     break;
@@ -55,7 +48,7 @@ namespace Lab5.Helperes
             {
                 vr1.Add(new VR(item.Worker, item.AVG));
             }
-            return vr1;   
+            return vr1;
         }
     }
 }

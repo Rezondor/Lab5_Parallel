@@ -1,10 +1,4 @@
 ﻿using Lab5.Models;
-using Lab5.Helperes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lab5.Helperes
 {
@@ -12,7 +6,7 @@ namespace Lab5.Helperes
     {
         public static List<Order> GenerateOrdersList(int count)
         {
-            
+
             List<Order> orders = new List<Order>(count);
             /*for(int i = 0; i < count; i++)
             {
