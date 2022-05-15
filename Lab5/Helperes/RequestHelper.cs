@@ -19,7 +19,7 @@ namespace Lab5.Helperes
         }
         public List<Order> GetOrdersWhereFullNameStartsWith(List<Worker> workers, char mark)
         {
-            var orders = workers.SelectMany(u => u.Orders,
+            List<Order> orders = workers.SelectMany(u => u.Orders,
                                         (u, l) => new { Worker = u, Orders = l })
                                       .Where(u => u.Worker.LastName.ToLower().Contains(mark) ||
                                       u.Worker.FirstName.ToLower().Contains(mark) ||
@@ -34,12 +34,12 @@ namespace Lab5.Helperes
             switch (beforeOrAfter)
             {
                 case BeforeOrAfter.Before:
-                    orders = workers.SelectMany(u => u.Orders, (u, l) => new { Orders = l })
+                    orders = (List<Order>)workers.SelectMany(u => u.Orders, (u, l) => new { Orders = l })
                           .Where(u => u.Orders.DateTime < dt)
                           .Select(u => u.Orders).OrderBy(u => u.DateTime).ToList();
                     break;
                 case BeforeOrAfter.After:
-                    orders = workers.SelectMany(u => u.Orders, (u, l) => new { Orders = l })
+                    orders = (List<Order>)workers.SelectMany(u => u.Orders, (u, l) => new { Orders = l })
                           .Where(u => u.Orders.DateTime > dt)
                           .Select(u => u.Orders).OrderBy(u => u.DateTime).ToList();
                     break;
